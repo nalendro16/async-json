@@ -8,7 +8,7 @@ const getProm = (resource) => {
       if (request.readyState === 4 && request.status === 200) {
         const data = JSON.parse(request.response)
         resolve(data)
-      } else if (request.readyState === 0) {
+      } else if (request.readyState === 4) {
         reject('error no data')
       }
     })
@@ -17,10 +17,18 @@ const getProm = (resource) => {
   })
 }
 
-getProm('todo.json')
+getProm('todos/luigi.json')
   .then((data) => {
-    console.log(data)
+    console.log('Promise luigi resolved', data)
+    return getProm('todos/pajkat.json')
+  })
+  .then((data) => {
+    console.log('Promise pajkat Resolver', data)
+    return getProm('todos/todo.json')
+  })
+  .then((data) => {
+    console.log('Promise todo Resolved', data)
   })
   .catch((err) => {
-    console.log(err)
+    console.log('Promise rejected', err)
   })
