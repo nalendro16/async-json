@@ -1,25 +1,26 @@
-const getTodos = (resource, callback) => {
-  const request = new XMLHttpRequest()
-
-  request.addEventListener('readystatechange', () => {
-    //   console.log(request, request.readyState)
-    if (request.readyState === 4 && request.status === 200) {
-      const data = JSON.parse(request.responseText)
-      callback(undefined, data)
-    } else if (request.readyState === 4) {
-      callback("could'nt fetch", undefined)
-    }
-  })
-
-  request.open('GET', resource)
-  request.send()
-}
-getTodos('todos/luigi.json', (err, data) => {
-  console.log(data)
-  getTodos('todos/pajkat.json', (err, data) => {
-    console.log(data)
-    getTodos('todos/todo.json', (err, data) => {
-      console.log(data)
+// promise
+const getProm = (resource) => {
+  return new Promise((resolve, reject) => {
+    // Http request
+    const request = new XMLHttpRequest()
+    // chek avaibility of statechange:
+    request.addEventListener('readystatechange', () => {
+      if (request.readyState === 4 && request.status === 200) {
+        const data = JSON.parse(request.response)
+        resolve(data)
+      } else if (request.readyState === 0) {
+        reject('error no data')
+      }
     })
+    request.open('GET', resource)
+    request.send()
   })
-})
+}
+
+getProm('todo.json')
+  .then((data) => {
+    console.log(data)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
