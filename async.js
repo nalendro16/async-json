@@ -17,6 +17,7 @@ const getProm = (resource) => {
   })
 }
 
+// use promise func
 getProm('todos/luigi.json')
   .then((data) => {
     console.log('Promise luigi resolved', data)
